@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic Tac Toe - Choose Mode</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-shadow: 0 0 5px #000;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 3rem;
+    }
+
+    .mode-select {
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255,255,255,0.4);
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      color: white;
+    }
+
+    .cell:hover {
+      background: black;
+      transform: scale(1.08);
+      border-color: #ffea00;
+      box-shadow: 0 0 10px #ffea00;
+    }
+
+    .cell.x { color: #00bfff; }
+    .cell.o { color: #ff4444; }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.5rem;
+    }
+
+    .restart {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 1.1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .restart:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tic Tac Toe</h1>
+
+  <div class="mode-select">
+    <label for="mode">Choose Mode: </label>
+    <select id="mode" onchange="restartGame()">
+      <option value="system">Play vs System</option>
+      <option value="human">Play vs Human</option>
+    </select>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Your turn (X)</div>
+  <button class="restart" onclick="restartGame()">Restart</button>
+
+  <script>
+    const board = document.getElementById('board');
+    const statusText = document.getElementById('status');
+    const modeSelect = document.getElementById('mode');
+
+    let gameActive = true;
+    const cells = [];
+    let currentPlayer = 'X';
+
+    const winningCombinations = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+
+    function checkWin(player) {
+      return winningCombinations.some(combination => {
+        const [a, b, c] = combination;
+        return (
+          cells[a].textContent === player &&
+          cells[b].textContent === player &&
+          cells[c].textContent === player
+        );
+      });
+    }
+
+    function checkDraw() {
+      return [...cells].every(cell => cell.textContent);
+    }
+
+    function handleClick(e) {
+      if (!gameActive) return;
+      const cell = e.target;
+      if (cell.textContent) return;
+
+      cell.textContent = currentPlayer;
+      cell.classList.add(currentPlayer.toLowerCase());
+
+      if (checkWin(currentPlayer)) {
+        statusText.textContent = `${currentPlayer === 'X' ? '🎉' : '💻'} ${currentPlayer} wins!`;
+        gameActive = false;
+        return;
+      } else if (checkDraw()) {
+        statusText.textContent = "🤝 It's a draw!";
+        gameActive = false;
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+      if (modeSelect.value === 'system' && currentPlayer === 'O') {
+        statusText.textContent = "System's turn (O)";
+        setTimeout(systemMove, 500);
+      } else {
+        statusText.textContent = `Your turn (${currentPlayer})`;
+      }
+    }
+
+    function systemMove() {
+      if (!gameActive) return;
+
+      const emptyCells = cells.filter(cell => !cell.textContent);
+      if (emptyCells.length === 0) return;
+
+      const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      randomCell.textContent = 'O';
+      randomCell.classList.add('o');
+
+      if (checkWin('O')) {
+        statusText.textContent = '💻 System wins!';
+        gameActive = false;
+      } else if (checkDraw()) {
+        statusText.textContent = "🤝 It's a draw!";
+        gameActive = false;
+      } else {
+        currentPlayer = 'X';
+        statusText.textContent = "Your turn (X)";
+      }
+    }
+
+    function createBoard() {
+      board.innerHTML = '';
+      cells.length = 0;
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.addEventListener('click', handleClick);
+        board.appendChild(cell);
+        cells.push(cell);
+      }
+    }
+
+    function restartGame() {
+      gameActive = true;
+      currentPlayer = 'X';
+      statusText.textContent = "Your turn (X)";
+      createBoard();
+    }
+
+    // Start game
+    createBoard();
+  </script>
+
+</body>
+</html>
+
+
+
+
+
