@@ -37,7 +37,7 @@ Tic-Tac-Toe/
 
 ### Home Screen
 
-![Game Interface](tictaktoe.png)
+![Game Interface](game.png)
 
 
 ## Game Rules
