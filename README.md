@@ -37,17 +37,8 @@ Tic-Tac-Toe/
 
 ### Home Screen
 
-![Game Interface](screenshots/game.png)
+![Game Interface](tictaktoe.png)
 
-## How to Run
-
-1. Clone or download this repository.
-2. Open the project folder.
-3. Open `index.html` in any web browser.
-4. Choose the game mode:
-   - Player vs System
-   - Player vs Human
-5. Start playing!
 
 ## Game Rules
 
