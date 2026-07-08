@@ -1,0 +1,90 @@
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-shadow: 0 0 5px #000;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 3rem;
+    }
+
+    .mode-select {
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255,255,255,0.4);
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      color: white;
+    }
+
+    .cell:hover {
+      background: black;
+      transform: scale(1.08);
+      border-color: #ffea00;
+      box-shadow: 0 0 10px #ffea00;
+    }
+
+    .cell.x { color: #00bfff; }
+    .cell.o { color: #ff4444; }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.5rem;
+    }
+
+    .restart {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 1.1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .restart:hover {
+      background-color: #218838;
+    }
